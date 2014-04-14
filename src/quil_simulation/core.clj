@@ -84,7 +84,7 @@
         (update-in [:y] + dy (:vy point))
         (boundary)
         (update-veloc)
-      ;  (update-parents)
+        (update-parents)
         )))
 
 (defn move-points [points]
@@ -104,8 +104,7 @@
 (defn draw []
   (swap! points move-points)
   (swap! old-points append-to-old @points)
-  (when (zero? (mod (frame-count) 1))
-  (background 255))
+  (background 255)
   (fill 255 0 0)
   (doseq [point @points]
     (ellipse (:x point) (:y point) 5 5)
