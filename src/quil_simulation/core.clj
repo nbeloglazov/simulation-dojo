@@ -13,6 +13,8 @@
    :y (rand-int h)
    :id-1 (rand-int no-of-points)
    :id-2 (rand-int no-of-points)
+   :vx (rand-int (/ step-size 2.))
+   :vy (rand-int (/ step-size 2.))
    }
   )
 
@@ -46,8 +48,8 @@
 (defn move-point [point]
   (let [[dx dy] (step-vector point)]
     (-> point
-        (update-in [:x] + dx)
-        (update-in [:y] + dy))))
+        (update-in [:x] + dx (:vx point))
+        (update-in [:y] + dy (:vy point)))))
 
 (defn move-points [points]
   (doall (map move-point points)))
