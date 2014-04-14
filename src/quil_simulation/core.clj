@@ -45,11 +45,27 @@
       [0 0]
       [(* step (/ xv dst)) (* step (/ yv dst))])))
 
+(defn wrap [val min max]
+  (cond
+   (< val min) (+ max val)
+   (> val max) (- val max)
+   :else val
+   )
+  )
+
+(defn boundary [point]
+    (-> point
+        (update-in [:x] wrap 0 w )
+        (update-in [:y] wrap 0 h )))
+
+
 (defn move-point [point]
   (let [[dx dy] (step-vector point)]
     (-> point
         (update-in [:x] + dx (:vx point))
-        (update-in [:y] + dy (:vy point)))))
+        (update-in [:y] + dy (:vy point))
+        (boundary)
+        )))
 
 (defn move-points [points]
   (doall (map move-point points)))
