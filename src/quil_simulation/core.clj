@@ -13,12 +13,11 @@
    :y (rand-int h)
    :id-1 (rand-int no-of-points)
    :id-2 (rand-int no-of-points)
-   :vx (rand-int (/ step-size 2.))
-   :vy (rand-int (/ step-size 2.))
+
+   :vx (* (- (rand 2) 1) (/ step-size 2.))
+   :vy (* (- (rand 2) 1) (/ step-size 2.))
    }
   )
-
-(create-point)
 
 (defn create-points []
   (repeatedly no-of-points create-point)
