@@ -39,7 +39,7 @@
         xv (- xmp xp) yv (- ymp yp)
         dst (sqrt (+ (* xv xv) (* yv yv)))
         step (min dst step-size)]
-    (if (< -1e-5 dst 1e-5)
+    (if (< dst 30)
       [0 0]
       [(* step (/ xv dst)) (* step (/ yv dst))])))
 
@@ -52,12 +52,20 @@
 (defn move-points [points]
   (doall (map move-point points)))
 
+(defn draw-vector [point]
+  (let [[xmp ymp] (compute-midpoint point)]
+    (line (:x point) (:y point) xmp ymp)
+    )
+  )
+
 (defn draw []
   (swap! points move-points)
   (background 255)
   (fill 255 0 0)
   (doseq [point @points]
-    (ellipse (:x point) (:y point) 5 5)))
+    (ellipse (:x point) (:y point) 5 5)
+    (draw-vector point)
+    ))
 
 (defn setup []
   (frame-rate 20))
@@ -66,3 +74,4 @@
   :size [w h]
   :draw draw
   :setup setup)
+
