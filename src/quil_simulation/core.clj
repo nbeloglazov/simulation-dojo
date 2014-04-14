@@ -2,9 +2,9 @@
   (:require [quil.core :refer :all]))
 
 
-(def w 500)
-(def h 500)
-(def no-of-points 100)
+(def w 700)
+(def h 700)
+(def no-of-points 400)
 (def step-size 5)
 
 (defn new-veloc []
@@ -15,6 +15,13 @@
     (assoc point
       :vx (new-veloc)
       :vy (new-veloc))
+    point))
+
+(defn update-parents [point]
+  (if (< (rand) 0.1)
+    (assoc point
+      :id-1 (rand-int no-of-points)
+      :id-2 (rand-int no-of-points))
     point))
 
 (defn create-point []
@@ -77,6 +84,7 @@
         (update-in [:y] + dy (:vy point))
         (boundary)
         (update-veloc)
+      ;  (update-parents)
         )))
 
 (defn move-points [points]
@@ -88,9 +96,16 @@
     )
   )
 
+(def old-points (atom []))
+
+(defn append-to-old [old points]
+  (take (* 5 no-of-points) (concat points old)))
+
 (defn draw []
   (swap! points move-points)
-  (background 255)
+  (swap! old-points append-to-old @points)
+  (when (zero? (mod (frame-count) 1))
+  (background 255))
   (fill 255 0 0)
   (doseq [point @points]
     (ellipse (:x point) (:y point) 5 5)
