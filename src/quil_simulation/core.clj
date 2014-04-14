@@ -7,6 +7,16 @@
 (def no-of-points 100)
 (def step-size 5)
 
+(defn new-veloc []
+  (* (- (rand 2) 1) (/ step-size 2.)))
+
+(defn update-veloc [point]
+  (if (< (rand) 0.1)
+    (assoc point
+      :vx (new-veloc)
+      :vy (new-veloc))
+    point))
+
 (defn create-point []
   {
    :x (rand-int w)
@@ -14,10 +24,12 @@
    :id-1 (rand-int no-of-points)
    :id-2 (rand-int no-of-points)
 
-   :vx (* (- (rand 2) 1) (/ step-size 2.))
-   :vy (* (- (rand 2) 1) (/ step-size 2.))
+   :vx (new-veloc)
+   :vy (new-veloc)
+   :step (- (rand (* 2 step-size)) 2)
    }
   )
+
 
 (defn create-points []
   (repeatedly no-of-points create-point)
@@ -39,7 +51,7 @@
         xp (:x point) yp (:y point)
         xv (- xmp xp) yv (- ymp yp)
         dst (sqrt (+ (* xv xv) (* yv yv)))
-        step (min dst step-size)]
+        step (min dst (:step point))]
     (if (< dst 30)
       [0 0]
       [(* step (/ xv dst)) (* step (/ yv dst))])))
@@ -64,6 +76,7 @@
         (update-in [:x] + dx (:vx point))
         (update-in [:y] + dy (:vy point))
         (boundary)
+        (update-veloc)
         )))
 
 (defn move-points [points]
@@ -81,7 +94,7 @@
   (fill 255 0 0)
   (doseq [point @points]
     (ellipse (:x point) (:y point) 5 5)
-    (draw-vector point)
+    ;(draw-vector point)
     ))
 
 (defn setup []
