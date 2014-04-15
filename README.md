@@ -1,14 +1,21 @@
-# quil
+# Points simulation
 
-A Clojure library designed to ... well, that part is up to you.
+Simple simulation developed during London clojure dojo. There is 1 basic rule: each point has 2 parents and tries to get to the center between parents. And we added few other rules to make simulation more "alive":
 
-## Usage
+* each point has it's own speed (may be negative - it means that point is repelled from it parents);
+* with 10% chance each point can randomly change it parents;
+* each point has constant velocity - vector, that defines how point would move if it had no parents;
 
-FIXME
 
-## License
+## How to run
 
-Copyright © 2014 FIXME
+Just run `src/quil_simulation/core.clj` file. 
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+## Screenshots
+Basic version:  
+
+![Points](points.png)
+
+Showing trail for each point:  
+
+![Wormls](worms.png)
